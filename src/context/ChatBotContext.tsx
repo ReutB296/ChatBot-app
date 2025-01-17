@@ -1,6 +1,6 @@
 import { createContext, FC, useContext, useState } from "react";
 
-type Message = {
+export type MessageType = {
   id: string;
   text: string;
   timestamp: Date;
@@ -8,7 +8,7 @@ type Message = {
 };
 
 interface ChatBotContextType {
-  messages: Message[];
+  messages: MessageType[];
   deleteMessage: (id: string) => void;
   resendMessage: (id: string) => void;
   addMessage: (text: string) => void;
@@ -22,10 +22,10 @@ const ChatBotContext = createContext<ChatBotContextType>({
 });
 
 export const ChatBotProvider: FC = ({ children }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
 
   const addMessage = (text: string) => {
-    const userMessage: Message = {
+    const userMessage: MessageType = {
       id: Date.now().toString(),
       text,
       timestamp: new Date(),
@@ -35,7 +35,7 @@ export const ChatBotProvider: FC = ({ children }) => {
     setMessages((prev) => [...prev, userMessage]);
 
     const timeoutId = setTimeout(() => {
-      const botMessage: Message = {
+      const botMessage: MessageType = {
         id: (Date.now() + 1).toString(),
         text,
         timestamp: new Date(),
@@ -48,7 +48,7 @@ export const ChatBotProvider: FC = ({ children }) => {
   };
 
   const deleteMessage = (id: string) => {
-    setMessages((prev) => prev.filter((msg: Message) => msg.id !== id));
+    setMessages((prev) => prev.filter((msg: MessageType) => msg.id !== id));
   };
 
   const resendMessage = (id: string) => {

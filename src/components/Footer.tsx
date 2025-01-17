@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import { useChatBotContext } from "../context/ChatBotContext";
 
 interface FooterProps {
   toggleSidebar: () => void;
@@ -6,13 +7,22 @@ interface FooterProps {
 }
 
 export const Footer: FC<FooterProps> = ({ toggleSidebar, isSidebarOpen }) => {
+  const { addMessage } = useChatBotContext();
+
   const [inputValue, setInputValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSend = () => {
     setIsLoading(true);
+    addMessage(inputValue);
     setInputValue("");
     setTimeout(() => setIsLoading(false), 1000);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && inputValue.trim() && !isLoading) {
+      handleSend();
+    }
   };
 
   return (
@@ -27,8 +37,9 @@ export const Footer: FC<FooterProps> = ({ toggleSidebar, isSidebarOpen }) => {
         type="text"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder="Type a message..."
-        className="w-1/2 px-3 py-2 border rounded focus:outline-none"
+        className="flex-1 px-3 py-2 border rounded focus:outline-none"
       />
       <button
         className={`px-4 py-2 rounded ${
@@ -37,7 +48,7 @@ export const Footer: FC<FooterProps> = ({ toggleSidebar, isSidebarOpen }) => {
             : "bg-green-500 hover:bg-green-600 text-white"
         }`}
         onClick={handleSend}
-        disabled={isLoading || !inputValue}
+        disabled={isLoading || !inputValue.trim()}
       >
         {isLoading ? "Sending..." : "Send"}
       </button>
