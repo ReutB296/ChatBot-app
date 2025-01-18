@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
 import { MessageInterface, useChatBotContext } from "../context/ChatBotContext";
 
 interface SideBarProps {
@@ -10,9 +10,15 @@ export const SideBar: FC<SideBarProps> = ({ isSidebarOpen, toggleSidebar }) => {
   const { messages, deleteMessage, resendMessage } = useChatBotContext();
   const userMessages = messages.filter((m) => m.isUser);
 
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <div
-      className={`w-64 bg-gray-50 border-r h-full p-4 
+      className={`w-64 bg-gray-50 border-r h-full p-4 overflow-scroll
               transform transition-transform duration-300 ease-in-out
               ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
@@ -47,6 +53,7 @@ export const SideBar: FC<SideBarProps> = ({ isSidebarOpen, toggleSidebar }) => {
           </div>
         ))}
       </div>
+      <div ref={bottomRef} />
     </div>
   );
 };

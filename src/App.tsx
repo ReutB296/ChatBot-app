@@ -14,13 +14,16 @@ function App() {
       <div className="h-screen flex flex-col">
         <Headr userName="Snow" />
         <div className="flex flex-1 overflow-hidden">
-          <SideBar
-            toggleSidebar={() => setShowSidebar(!showSidebar)}
-            isSidebarOpen={showSidebar}
-          />
-          <main className="flex-1">
-            <MessageList />
-          </main>
+          <div
+            className={`transition-all duration-300 ease-in-out
+                       ${showSidebar ? "w-64" : "w-0"}`}
+          >
+            <SideBar
+              toggleSidebar={() => setShowSidebar(!showSidebar)}
+              isSidebarOpen={showSidebar}
+            />
+          </div>
+          <MessageList />
         </div>
         <Footer
           toggleSidebar={() => setShowSidebar(!showSidebar)}
