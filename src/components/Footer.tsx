@@ -31,7 +31,7 @@ export const Footer: FC<FooterProps> = ({ toggleSidebar, isSidebarOpen }) => {
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         onClick={toggleSidebar}
       >
-        {isSidebarOpen ? "Hide" : "Show"}
+        {isSidebarOpen ? "Hide sidebar" : "Show sidebar"}
       </button>
       <input
         type="text"

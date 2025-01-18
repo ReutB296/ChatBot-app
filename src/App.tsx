@@ -14,7 +14,9 @@ function App() {
       <div className="h-screen flex flex-col">
         <Headr userName="Snow" />
         <div className="flex flex-1 overflow-hidden">
-          {showSidebar && <SideBar />}
+          {showSidebar && (
+            <SideBar toggleSidebar={() => setShowSidebar(!showSidebar)} />
+          )}
           <MessageList />
         </div>
         <Footer
