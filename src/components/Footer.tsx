@@ -16,7 +16,8 @@ export const Footer: FC<FooterProps> = ({ toggleSidebar, isSidebarOpen }) => {
     setIsLoading(true);
     addMessage(inputValue);
     setInputValue("");
-    setTimeout(() => setIsLoading(false), 1000);
+    const timeoutId = setTimeout(() => setIsLoading(false), 1000);
+    return () => clearTimeout(timeoutId);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -28,7 +29,7 @@ export const Footer: FC<FooterProps> = ({ toggleSidebar, isSidebarOpen }) => {
   return (
     <footer className="flex items-center gap-4 p-4 bg-gray-200">
       <button
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-32"
         onClick={toggleSidebar}
       >
         {isSidebarOpen ? "Hide sidebar" : "Show sidebar"}

@@ -48,11 +48,23 @@ export const ChatBotProvider: FC = ({ children }) => {
   };
 
   const deleteMessage = (id: string) => {
-    setMessages((prev) => prev.filter((msg: MessageType) => msg.id !== id));
+    const messageToDelete = messages.find((msg: MessageType) => msg.id === id);
+    if (messageToDelete) {
+      const messageIndex = messages.findIndex(
+        (msg: MessageType) => msg.id === id
+      );
+      const botResponse = messages[messageIndex + 1];
+
+      setMessages((prev) =>
+        prev.filter(
+          (msg: MessageType) => msg.id !== id && msg.id !== botResponse?.id
+        )
+      );
+    }
   };
 
   const resendMessage = (id: string) => {
-    const message = messages.find((msg) => msg.id === id);
+    const message = messages.find((msg: MessageType) => msg.id === id);
     if (message) {
       setTimeout(() => addMessage(message.text), 1000);
     }

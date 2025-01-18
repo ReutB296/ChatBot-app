@@ -10,20 +10,15 @@ export const SideBar: FC<SideBarProps> = ({ toggleSidebar }) => {
   const userMessages = messages.filter((m) => m.isUser);
 
   return (
-    <div className="w-64 bg-gray-50 border-l p-4">
+    <div className="w-64 bg-gray-50 border-l p-4 relative">
       <div
-        className="
-                   cursor-pointer bg-white rounded-full 
-                   shadow-md hover:shadow-lg
-                   w-8 h-8 flex items-center justify-center
-                   border border-gray-200
-                   text-gray-600 hover:bg-gray-50"
+        className="absolute right-4 top-2 cursor-pointer"
         onClick={toggleSidebar}
       >
-        <span className="text-xl font-semibold translate-y-[-2px]">‹</span>
+        <span className="text-xl font-semibold">×</span>
       </div>
 
-      <h2 className="font-bold mb-4 mt-2">Recent Messages</h2>
+      <h2 className="font-bold mb-4">Recent Messages</h2>
       <div className="space-y-2">
         {userMessages.map((message: MessageType) => (
           <div key={message.id} className="p-2 bg-white rounded shadow">
