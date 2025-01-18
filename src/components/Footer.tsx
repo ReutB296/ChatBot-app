@@ -16,11 +16,13 @@ export const Footer: FC<FooterProps> = ({ toggleSidebar, isSidebarOpen }) => {
     setIsLoading(true);
     addMessage(inputValue);
     setInputValue("");
-    const timeoutId = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timeoutId);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputValue.trim() && !isLoading) {
       handleSend();
     }

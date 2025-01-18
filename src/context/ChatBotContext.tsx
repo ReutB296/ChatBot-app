@@ -34,7 +34,7 @@ export const ChatBotProvider: FC = ({ children }) => {
 
     setMessages((prev) => [...prev, userMessage]);
 
-    const timeoutId = setTimeout(() => {
+    setTimeout(() => {
       const botMessage: MessageInterface = {
         id: (Date.now() + 1).toString(),
         text,
@@ -43,8 +43,6 @@ export const ChatBotProvider: FC = ({ children }) => {
       };
       setMessages((prev) => [...prev, botMessage]);
     }, 1000);
-
-    return () => clearTimeout(timeoutId);
   };
 
   const deleteMessage = (id: string) => {
