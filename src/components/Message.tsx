@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { MessageType } from "../context/ChatBotContext";
+import { MessageInterface } from "../context/ChatBotContext";
 
 type MessageProps = {
-  message: MessageType;
+  message: MessageInterface;
 };
 
 export const Message: FC<MessageProps> = ({ message }) => {

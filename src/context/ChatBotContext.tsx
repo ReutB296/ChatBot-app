@@ -1,14 +1,14 @@
 import { createContext, FC, useContext, useState } from "react";
 
-export type MessageType = {
+export interface MessageInterface {
   id: string;
   text: string;
   timestamp: Date;
   isUser: boolean;
-};
+}
 
 interface ChatBotContextType {
-  messages: MessageType[];
+  messages: MessageInterface[];
   deleteMessage: (id: string) => void;
   resendMessage: (id: string) => void;
   addMessage: (text: string) => void;
@@ -22,10 +22,10 @@ const ChatBotContext = createContext<ChatBotContextType>({
 });
 
 export const ChatBotProvider: FC = ({ children }) => {
-  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [messages, setMessages] = useState<MessageInterface[]>([]);
 
   const addMessage = (text: string) => {
-    const userMessage: MessageType = {
+    const userMessage: MessageInterface = {
       id: Date.now().toString(),
       text,
       timestamp: new Date(),
@@ -35,7 +35,7 @@ export const ChatBotProvider: FC = ({ children }) => {
     setMessages((prev) => [...prev, userMessage]);
 
     const timeoutId = setTimeout(() => {
-      const botMessage: MessageType = {
+      const botMessage: MessageInterface = {
         id: (Date.now() + 1).toString(),
         text,
         timestamp: new Date(),
@@ -48,23 +48,25 @@ export const ChatBotProvider: FC = ({ children }) => {
   };
 
   const deleteMessage = (id: string) => {
-    const messageToDelete = messages.find((msg: MessageType) => msg.id === id);
+    const messageToDelete = messages.find(
+      (msg: MessageInterface) => msg.id === id
+    );
     if (messageToDelete) {
       const messageIndex = messages.findIndex(
-        (msg: MessageType) => msg.id === id
+        (msg: MessageInterface) => msg.id === id
       );
       const botResponse = messages[messageIndex + 1];
 
       setMessages((prev) =>
         prev.filter(
-          (msg: MessageType) => msg.id !== id && msg.id !== botResponse?.id
+          (msg: MessageInterface) => msg.id !== id && msg.id !== botResponse?.id
         )
       );
     }
   };
 
   const resendMessage = (id: string) => {
-    const message = messages.find((msg: MessageType) => msg.id === id);
+    const message = messages.find((msg: MessageInterface) => msg.id === id);
     if (message) {
       setTimeout(() => addMessage(message.text), 1000);
     }
