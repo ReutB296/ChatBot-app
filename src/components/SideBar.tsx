@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useMemo } from "react";
 import { MessageInterface, useChatBotContext } from "../context/ChatBotContext";
 
 interface SideBarProps {
@@ -8,17 +8,18 @@ interface SideBarProps {
 
 export const SideBar: FC<SideBarProps> = ({ isSidebarOpen, toggleSidebar }) => {
   const { messages, deleteMessage, resendMessage } = useChatBotContext();
-  const userMessages = messages.filter((m) => m.isUser);
 
-  const bottomRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  const userMessages = useMemo(
+    () =>
+      messages
+        .filter((m) => m.isUser)
+        .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()),
+    [messages]
+  );
 
   return (
     <div
-      className={`w-64 bg-gray-50 border-r h-full p-4 overflow-scroll
+      className={`w-64 bg-gray-50 border-r h-full p-4 
               transform transition-transform duration-300 ease-in-out
               ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
@@ -29,7 +30,7 @@ export const SideBar: FC<SideBarProps> = ({ isSidebarOpen, toggleSidebar }) => {
         <span className="text-xl font-semibold">×</span>
       </div>
       <h2 className="font-bold mb-4">Recent Messages</h2>
-      <div className="space-y-2">
+      <div className="space-y-2 overflow-y-auto h-[calc(100%-3rem)]">
         {userMessages.map((message: MessageInterface) => (
           <div key={message.id} className="p-2 bg-white rounded shadow">
             <p className="text-sm truncate">{message.text}</p>
@@ -53,7 +54,6 @@ export const SideBar: FC<SideBarProps> = ({ isSidebarOpen, toggleSidebar }) => {
           </div>
         ))}
       </div>
-      <div ref={bottomRef} />
     </div>
   );
 };
