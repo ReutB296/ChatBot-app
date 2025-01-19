@@ -14,10 +14,10 @@ export const Footer: FC<FooterProps> = ({ toggleSidebar, isSidebarOpen }) => {
 
   const handleSend = () => {
     setIsLoading(true);
-    addMessage(inputValue);
     setInputValue("");
 
     setTimeout(() => {
+      addMessage(inputValue);
       setIsLoading(false);
     }, 1000);
   };
